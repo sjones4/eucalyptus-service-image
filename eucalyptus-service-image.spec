@@ -25,6 +25,8 @@ Obsoletes:      eucalyptus-load-balancer-image < 1.2
 Provides:       eucalyptus-imaging-worker-image
 Provides:       eucalyptus-load-balancer-image
 
+# Use fast compression (image already compressed)
+%global _binary_payload w1.gzdio
 
 %description
 This package contains a machine image for use in Eucalyptus to
