@@ -55,7 +55,6 @@ yum-utils
 -plymouth
 -plymouth-system-theme
 -postfix
--selinux-policy-targeted
 -sysstat
 %end
 
