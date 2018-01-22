@@ -1,5 +1,5 @@
 Name:           eucalyptus-service-image
-Version:        3
+Version:        3.32
 Release:        0%{?dist}
 Summary:        Eucalyptus Service Image
 
