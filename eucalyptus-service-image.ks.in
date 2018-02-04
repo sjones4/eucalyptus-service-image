@@ -49,14 +49,26 @@ yum-utils
 -*firmware
 -acl
 -b43-openfwwf
+-btrfs-progs
 -cyrus-sasl
+-deltarpm
+-dracut-config-rescue
 -efibootmgr
+-microcode_ctl
 -mysql-libs
+-NetworkManager
+-NetworkManager-libnm
+-NetworkManager-team
+-NetworkManager-tui
+-NetworkManager-wifi
 -plymouth
 -plymouth-system-theme
 -postfix
--selinux-policy-targeted
+-python-deltarpm
+-qemu-guest-agent
 -sysstat
+-wpa_supplicant
+-xfsprogs
 %end
 
 %post --erroronfail --log=/root/kickstart-post.log
