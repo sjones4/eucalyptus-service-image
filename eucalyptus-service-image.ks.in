@@ -25,66 +25,44 @@ repo --name eucalyptus --baseurl=@EUCALYPTUS_MIRROR@
 # Add all the packages after the base packages
 %packages --excludedocs --instLangs=en
 @core
+
 audit
 bash
 chkconfig
+cloud-init
 coreutils
+createrepo
 curl
 e2fsprogs
 ec2-net-utils
+epel-release
+ntp
+ntpdate
 openssh-server
 passwd
 policycoreutils
 rootfiles
 sudo
 system-config-firewall-base
-ntp
-ntpdate
-createrepo
 yum-utils
 
-epel-release
-cloud-init
-eucalyptus-service-image-release
-
--plymouth
--plymouth-system-theme
--efibootmgr
+-*firmware
 -acl
--atmel-firmware
 -b43-openfwwf
 -cyrus-sasl
+-efibootmgr
+-mysql-libs
+-plymouth
+-plymouth-system-theme
 -postfix
 -sysstat
--xorg-x11-drv-ati-firmware
--ipw2100-firmware
--ipw2200-firmware
--ivtv-firmware
--iwl1000-firmware
--iwl3945-firmware
--iwl4965-firmware
--iwl5000-firmware
--iwl5150-firmware
--iwl6000-firmware
--iwl6050-firmware
--libertas-usb8388-firmware
--rt61pci-firmware
--rt73usb-firmware
--mysql-libs
--zd1211-firmware
--ql2100-firmware
--ql2200-firmware
--ql23xx-firmware
--ql2400-firmware
--ql2500-firmware
--aic94xx-firmware
--iwl6000g2a-firmware
--iwl100-firmware
--bfa-firmware
 %end
 
 %post --erroronfail --log=/root/kickstart-post.log
 set -x
+
+# packages cleanup
+yum -y erase linux-firmware
 
 # Setup console
 cat > /etc/init/ttyS0.conf <<EOF
@@ -156,6 +134,19 @@ EOF
 yumdownloader --resolve -c /tmp/yum-tmp.conf --destdir /var/lib/eucalyptus-service-image/packages eucalyptus-imaging-worker load-balancer-servo euca2ools
 createrepo /var/lib/eucalyptus-service-image/packages
 rm /tmp/yum-tmp.conf
+
+# Configure service packages repository
+cat > /etc/yum.repos.d/eucalyptus-service-image.repo << EOF
+[eucalyptus-service-image]
+name=Eucalyptus Service Image Packages - $basearch
+baseurl=file:///var/lib/eucalyptus-service-image/packages
+enabled=1
+gpgcheck=0
+skip_if_unavailable=1
+EOF
+
+yum clean all
+
 %end
 
 #vim: set syntax=kickstart:
