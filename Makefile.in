@@ -22,24 +22,26 @@ build-py: setup.py $(wildcard bin/*) $(wildcard esitoolsupport/*)
 	@PYTHON@ setup.py build
 
 build/image/eucalyptus-service-image.raw: eucalyptus-service-image.ks
-	mkdir -p build/image
+	mkdir -m 777 -p build/image
 	$(destroyvm)
 	@PYTHON@ -c 'import pty, sys; pty.spawn(sys.argv[1:])' \
 		@VIRT_INSTALL@ --name $< \
 		--initrd-inject $< \
 		--extra-args ks="file:/$< console=tty0 console=ttyS0,115200 serial" \
 		--location @INSTALL_TREE@ \
+		--network=user \
 		--disk $@,format=raw,size=$(DISK) \
 		--vcpus $(CPUS) --ram $(MEMORY) \
+		--cpu=host \
 		--graphics none \
-		--hvm --accelerate --noreboot \
+		--hvm --virt-type=kvm --noreboot \
 		; STATUS=$$?; $(destroyvm); exit $$STATUS
 	@VIRT_SYSPREP@ -a $@
 	@VIRT_SPARSIFY@ $@ $@.sparse
 	mv $@.sparse $@
 
 %.tar.xz: %.raw
-	tar -cJS -C $$(dirname $<) -f $@ $$(basename $<)
+	XZ_OPT=-8e tar -cJS -C $$(dirname $<) -f $@ $$(basename $<)
 
 install: build/image/eucalyptus-service-image.tar.xz install-py
 	install -D -m 0644 $< $(DESTDIR)$(imagedir)/@PACKAGE_TARNAME@-@PACKAGE_VERSION@.tar.xz
