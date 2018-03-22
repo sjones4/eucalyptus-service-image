@@ -74,13 +74,10 @@ exec /sbin/mingetty /dev/ttyS0
 EOF
 
 # Configure sudo
-sed -i '/requiretty/s/^/#/' /etc/sudoers
 sed -i '/!visiblepw/s/^/#/' /etc/sudoers
-echo "cloud-user ALL = NOPASSWD: ALL" >> /etc/sudoers
 
 # Configure cloud-init
-sed -i 's/name: fedora/name: cloud-user/' /etc/cloud/cloud.cfg
-sed -i 's/gecos: Fedora Cloud User/gecos: Cloud User/' /etc/cloud/cloud.cfg
+sed -i 's/name: centos/name: cloud-user/' /etc/cloud/cloud.cfg
 
 # Configure networking
 echo "NOZEROCONF=yes" >> /etc/sysconfig/network
@@ -88,6 +85,7 @@ echo "NETWORKING=yes" >> /etc/sysconfig/network
 
 # Configure sshd
 sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+sed -i 's/GSSAPIAuthentication yes/GSSAPIAuthentication no/' /etc/ssh/sshd_config
 cat >> /etc/ssh/sshd_config <<EOF
 UseDNS no
 PermitRootLogin without-password
