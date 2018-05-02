@@ -36,6 +36,7 @@ curl
 e2fsprogs
 ec2-net-utils
 epel-release
+java-1.8.0-openjdk
 ntp
 ntpdate
 openssh-server
