@@ -6,7 +6,7 @@ Summary:        Eucalyptus Service Image
 Group:          Applications/System
 # License needs to be the *distro's* license (Fedora is GPLv2, for instance)
 License:        GPLv2
-URL:            http://www.eucalyptus.com/
+URL:            https://eucalyptus.cloud/
 BuildArch:      noarch
 
 Source0:        %{name}-%{version}.tar.xz
