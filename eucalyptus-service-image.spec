@@ -1,6 +1,6 @@
 Name:           eucalyptus-service-image
 Version:        4.4
-Release:        0%{?dist}
+Release:        1%{?dist}
 Summary:        Eucalyptus Service Image
 
 Group:          Applications/System
