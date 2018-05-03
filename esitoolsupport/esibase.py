@@ -28,13 +28,13 @@ class EsiBase(object):
         self.vars = {}
         self.args = args
         def_region = os.getenv("AWS_DEFAULT_REGION")
-        self.region = args.region if args.region is not None else 'localhost' if def_region is None else def_region
+        self.region = args.region if args.region is not None else def_region
+        self.region_args = [] if self.region is None else ['--region', self.region]
         self.debug = args.debug
         if self.debug:
             print "Using {0} region".format(self.region)
         self._load_vars()
         self._set_environment()
-
 
     @staticmethod
     def add_arguments(parser):
@@ -71,15 +71,15 @@ class EsiBase(object):
                                    stdout=subprocess.PIPE)
         for line in process.stdout:
             split = line.strip().split(None, 1)
-            if len(split) > 1 and (split[0].startswith('(eucalyptus)')
-                                   or split[0].startswith('eucalyptus')):
+            if len(split) > 1 and (split[0].startswith('(eucalyptus)') or
+                                   split[0] == 'eucalyptus'):
                 accounts[split[0]] = split[1]
         return accounts
 
     def _load_vars(self):
         EsiBase._check_binary(['euca-generate-environment-config'])
-        process = subprocess.Popen(['euca-generate-environment-config', '--simple', '--region',
-                                    self.region], stdout=subprocess.PIPE)
+        process = subprocess.Popen(['euca-generate-environment-config', '--simple'] + self.region_args,
+                                   stdout=subprocess.PIPE)
         t = process.communicate()
         if process.returncode == 0:
             for var in t[0].split('\n'):
@@ -118,13 +118,13 @@ class EsiBase(object):
             sys.exit(1)
 
     def check_environment(self):
-        if self.vars["EC2_URL"] is None or \
-                self.vars["AWS_ACCESS_KEY_ID"] is None or \
-                self.vars["AWS_SECRET_ACCESS_KEY"] is None or \
-                self.vars["AWS_IAM_URL"] is None:
-            print >> sys.stderr, "Error: Unable to find EC2_URL, AWS_IAM_URL, " \
-                                 "AWS_ACCESS_KEY_ID, or AWS_SECRET_ACCESS_KEY"
-            print >> sys.stderr, "Make sure your environment is properly configured."
+        if (self.vars["EC2_URL"] is None or
+                self.vars["AWS_ACCESS_KEY_ID"] is None or
+                self.vars["AWS_SECRET_ACCESS_KEY"] is None or
+                self.vars["AWS_IAM_URL"] is None):
+            print >> sys.stderr, ("Error: Unable to find EC2_URL, AWS_IAM_URL, "
+                                  "AWS_ACCESS_KEY_ID, or AWS_SECRET_ACCESS_KEY")
+            print >> sys.stderr, "Make sure your environment is properly configured"
             sys.exit(1)
 
     def _set_property(self, property, value):
