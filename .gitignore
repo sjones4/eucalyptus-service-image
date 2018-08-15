@@ -1,8 +1,10 @@
+*.iml
 *.ks
 config.status
 config.log
 configure
 Makefile
+.idea/
 autom4te.cache/
 build/
 dist/
