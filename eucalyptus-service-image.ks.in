@@ -24,7 +24,7 @@ repo --name eucalyptus --baseurl=@EUCALYPTUS_MIRROR@
 
 # Add all the packages after the base packages
 %packages --excludedocs --instLangs=en
-@core
+@core --nodefaults
 
 audit
 bash
@@ -55,6 +55,11 @@ yum-utils
 -deltarpm
 -dracut-config-rescue
 -efibootmgr
+-firewalld
+-kernel-tools
+-iprutils
+-libsysfs
+-man-db
 -microcode_ctl
 -mysql-libs
 -NetworkManager
@@ -67,6 +72,8 @@ yum-utils
 -postfix
 -python-deltarpm
 -qemu-guest-agent
+-sg3_utils
+-sg3_utils-libs
 -sysstat
 -wpa_supplicant
 -xfsprogs
