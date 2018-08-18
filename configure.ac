@@ -1,9 +1,9 @@
 AC_INIT([eucalyptus-service-image], [5.0.100])
 
-INSTALL_TREE=http://linux.mirrors.es.net/centos/7/os/x86_64/
+INSTALL_TREE=http://mirror.rackspace.com/CentOS/7.5.1804/os/x86_64/
 BASE_MIRROR=${INSTALL_TREE}
-UPDATES_MIRROR=http://linux.mirrors.es.net/centos/7/updates/x86_64/
-EPEL_MIRROR=http://linux.mirrors.es.net/epel/7/x86_64/
+UPDATES_MIRROR=http://mirror.rackspace.com/CentOS/7.5.1804/updates/x86_64/
+EPEL_MIRROR=http://mirror.rackspace.com/epel/7/x86_64/
 EUCALYPTUS_MIRROR=http://downloads.eucalyptus.com/software/eucalyptus/4.4/rhel/7/x86_64/
 EUCA2OOLS_MIRROR=http://downloads.eucalyptus.com/software/euca2ools/3.3/rhel/7/x86_64/
 
