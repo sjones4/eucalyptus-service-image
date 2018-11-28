@@ -19,6 +19,8 @@ BuildRequires:  python-devel
 Requires:       euca2ools >= 3.3
 Requires:       eucalyptus-admin-tools >= 4.2
 Requires:       python-prettytable
+Requires:       tar
+Requires:       xz
 
 Obsoletes:      eucalyptus-imaging-worker-image < 1.1
 Obsoletes:      eucalyptus-load-balancer-image < 1.2
@@ -59,6 +61,9 @@ make install DESTDIR=$RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Nov 14 2018 Steve Jones <steve.jones@appscale.com>
+- Add dependencies for tar and xz used for default image install
+
 * Wed Jul 25 2018 Steve Jones <steve.jones@appscale.com> - 5.0
 - Version bump (5.0)
 
