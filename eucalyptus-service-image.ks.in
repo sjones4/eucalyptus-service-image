@@ -100,8 +100,19 @@ sed -i '/!visiblepw/s/^/#/' /etc/sudoers
 sed -i 's/name: centos/name: cloud-user/' /etc/cloud/cloud.cfg
 
 # Configure networking
+mkdir -p /etc/systemd/system/cloud-init-local.service.d
+cat > /etc/systemd/system/cloud-init-local.service.d/10-execstart-networking.conf <<EOF
+[Service]
+ExecStart=/usr/local/bin/reset-networking.sh
+EOF
+cat > /usr/local/bin/reset-networking.sh <<EOF
+#!/bin/bash
+echo "# Networking config from /usr/local/bin/reset-networking.sh" > /etc/sysconfig/network
 echo "NOZEROCONF=yes" >> /etc/sysconfig/network
 echo "NETWORKING=yes" >> /etc/sysconfig/network
+EOF
+chmod 755 /usr/local/bin/reset-networking.sh
+/usr/local/bin/reset-networking.sh
 
 # Configure sshd
 sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
