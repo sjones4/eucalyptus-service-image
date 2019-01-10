@@ -16,11 +16,7 @@ BuildRequires:  /usr/bin/virt-sparsify
 BuildRequires:  /usr/bin/virt-sysprep
 BuildRequires:  python-devel
 
-Requires:       euca2ools >= 3.3
-Requires:       eucalyptus-admin-tools >= 4.2
-Requires:       python-prettytable
-Requires:       tar
-Requires:       xz
+Requires:       %{name}-tools = %{version}-%{release}
 
 Obsoletes:      eucalyptus-imaging-worker-image < 1.1
 Obsoletes:      eucalyptus-load-balancer-image < 1.2
@@ -34,6 +30,20 @@ Provides:       eucalyptus-load-balancer-image
 This package contains a machine image for use in Eucalyptus to
 instantiate multiple internal services.
 
+%package tools
+Summary:      Eucalyptus Service Image Tools
+
+BuildRequires:  python-devel
+
+Requires:       euca2ools >= 3.3
+Requires:       eucalyptus-admin-tools >= 4.2
+Requires:       python-prettytable
+Requires:       tar
+Requires:       xz
+
+%description tools
+This package contains tools for management of machine images used by
+Eucalyptus to instantiate multiple internal services.
 
 %prep
 %setup -q
@@ -51,16 +61,23 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %doc IMAGE-LICENSE
-/usr/bin/esi-describe-images
-/usr/bin/esi-install-image
-/usr/bin/esi-manage-stack
-%{python_sitelib}/esitoolsupport*
 # Something else should probably own the service-images dir at some
 # point, but we can deal with that later when we have more than one.
 /usr/share/eucalyptus/service-images/%{name}-%{version}.tar.xz
 
 
+%files tools
+%defattr(-,root,root,-)
+/usr/bin/esi-describe-images
+/usr/bin/esi-install-image
+/usr/bin/esi-manage-stack
+%{python_sitelib}/esitoolsupport*
+
+
 %changelog
+* Fri Jan  4 2019 Steve Jones <steve.jones@appscale.com> - 5.0
+- Separate rpm for esi tools
+
 * Wed Nov 14 2018 Steve Jones <steve.jones@appscale.com>
 - Add dependencies for tar and xz used for default image install
 
