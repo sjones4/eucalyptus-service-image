@@ -49,6 +49,7 @@ install: build/image/eucalyptus-service-image.tar.xz install-py
 ifdef DESTDIR
 install-py: build-py
 	@PYTHON@ setup.py install -O1 --skip-build --root $(DESTDIR)
+	@sed --in-place '1s/python$$/python2/' $(DESTDIR)/usr/bin/esi-*
 else
 install-py: build-py
 	@PYTHON@ setup.py install -O1 --skip-build
